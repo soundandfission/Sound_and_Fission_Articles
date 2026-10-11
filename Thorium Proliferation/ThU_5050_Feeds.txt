@@ -1,0 +1,43 @@
+FAST_ELEMENTS = ['H','He','N','O','Ne','Ar','Kr','Nb','Mo','Tc','Ru','Rh','Pd','Ag','Sb','Te','Xe','Rn']
+SLOW_ELEMENTS = ['Zn','Ga','Ge','As','Se','Br','Rb','Sr','Y','Zr','Cd','In','Sn','I',
+                 'Cs','Ba','La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb']
+
+FUEL_REMOVAL_PER_DAY = {**{e: math.log(2) * 86400 / 30 for e in FAST_ELEMENTS}, ##{**{e: 0.9998 for e in FAST_ELEMENTS},
+                        **{e: 1/450 for e in SLOW_ELEMENTS}}          # ≈0.002222/day
+
+BLANKET_REMOVAL_PER_DAY = {**{e: math.log(2) * 86400 / 30 for e in FAST_ELEMENTS}, ##{**{e: 0.9998 for e in FAST_ELEMENTS},
+                            **{e: 1/19250 for e in SLOW_ELEMENTS}}      # ≈5.19e-5/day
+
+#FUEL_REMOVAL_PER_DAY['U'] = 3.5e-5  # 1/day; trial value
+#BLANKET_REMOVAL_PER_DAY['U'] = 5.0e-5  # 1/day; trial value
+
+FUEL_REMOVAL_PER_DAY['U'] = 2.75e-5  # 1/day; trial value
+BLANKET_REMOVAL_PER_DAY['U'] = 4.0e-5  # 1/day; trial value
+
+BLANKET_TO_FUEL_PER_DAY = {'Pa': 1/250, 'U' : 1/250}                    # ≈0.00476/day
+# When enabled, the Pa entry above is extracted from the blanket instead of moved
+# to fuel. Only its live Pa233 share becomes U233; no decay delay is modeled.
+PA_TO_U233_EXCHANGE = {'enabled': True,
+                       'chemical_efficiency': 1.0,
+                       'pa233_yield_fraction': 1.0}
+
+EXTERNAL_FEEDS = {
+    'fuel salt': {
+        'rate_g_per_day': 3125.0,
+        'composition_wt': {
+            'Th232': 0.500000,
+            'U238':  0.498995,
+            'U235':  0.001000,
+            'U234':  0.000005,
+        },
+    },
+    'blanket salt': {
+        'rate_g_per_day': 660.0,
+        'composition_wt': {
+            'Th232': 0.500000,
+            'U238':  0.498995,
+            'U235':  0.001000,
+            'U234':  0.000005,
+        },
+    },
+}
